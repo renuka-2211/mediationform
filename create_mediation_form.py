@@ -2,6 +2,8 @@ from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement, ns
+from docx.shared import Inches
+
 
 def set_table_borders(table):
     tbl = table._tbl
@@ -20,6 +22,13 @@ def set_table_borders(table):
 # Create document
 doc = Document()
 
+section = doc.sections[0]
+section.top_margin = Inches(1)
+section.bottom_margin = Inches(1)
+section.left_margin = Inches(1)
+section.right_margin = Inches(1)
+
+
 # Title
 p = doc.add_paragraph("FORM ‘A’")
 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -31,6 +40,11 @@ p.runs[0].bold = True
 
 p = doc.add_paragraph("Mumbai District Legal Services Authority\nCity Civil Court, Mumbai")
 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+run = paragraph.runs[0]
+run.font.name = "Times New Roman"
+run.font.size = Pt(12)
+
 
 doc.add_paragraph("\nDETAILS OF PARTIES:")
 
@@ -61,6 +75,8 @@ for i, row in enumerate(data):
         cell = table.cell(i, j)
         cell.text = value
         cell.paragraphs[0].runs[0].font.size = Pt(10)
+
+
 
 # Save file
 doc.save("mediation_application_form.docx")
